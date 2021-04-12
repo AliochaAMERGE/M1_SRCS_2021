@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package srcs.chat;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+option java_multiple_files = true;
+
+message SubscribeChat 
+{
+    string pseudo = 1;
+    string host = 2; 
+    sint32 port = 3;
+}
+
+message SendChat 
+{
+    string pseudo = 1;
+    string message = 2;
+}
+
+
+message NewMessageRec 
+{
+    string pseudo_expediteur = 1;
+    string contenu = 2;
+}
+
+service Chat 
+{
+    rpc subscribe(SubscribeChat) returns(google.protobuf.BoolValue);
+    rpc send(SendChat) returns(google.protobuf.Int32Value);
+    rpc listChatter(google.protobuf.Empty) returns(stream google.protobuf.StringValue);
+    rpc unsubscribe(google.protobuf.StringValue) returns(google.protobuf.Empty);
+}
+
+service MessageReceiver 
+{
+    rpc newMessage(NewMessageRec) returns(google.protobuf.Empty);
+}

@@ -1,0 +1,19 @@
+/* AUTOMATICALLY GENERATED ON Thu Apr 08 22:57:49 CEST 2021*/
+/* DO NOT EDIT */
+
+grant {
+  permission javax.security.jacc.EJBMethodPermission "Counter", "getValue,Local,";
+  permission javax.security.jacc.EJBMethodPermission "SayHello", "hello,Remote,java.lang.String";
+  permission javax.security.jacc.EJBMethodPermission "Counter", "decrement,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "Counter", "decrement,Local,";
+  permission javax.security.jacc.EJBMethodPermission "Counter", "increment,Local,";
+  permission javax.security.jacc.EJBMethodPermission "Counter", "getValue,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "Counter", "increment,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "SayHello", "hello,Local,java.lang.String";
+};
+
+grant      principal * * {
+  permission javax.security.jacc.EJBRoleRefPermission "SayHello", "**";
+  permission javax.security.jacc.EJBRoleRefPermission "Counter", "**";
+};
+

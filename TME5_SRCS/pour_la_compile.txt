@@ -1,0 +1,7 @@
+protoc \
+--proto_path='/home/aliocha/Workspace/M1S2/SRCS/TME5_SRCS' \
+--proto_path='/home/aliocha/app/protobuf-3.15.6/src' \
+--plugin='/home/aliocha/app/grpc-java/compiler/protoc-gen-grpc-java'\
+--grpc-java_out='/home/aliocha/Workspace/M1S2/SRCS/TME5_SRCS'  \
+--java_out='/home/aliocha/Workspace/M1S2/SRCS/TME5_SRCS' \
+'/home/aliocha/Workspace/M1S2/SRCS/TME5_SRCS/chat.proto'
