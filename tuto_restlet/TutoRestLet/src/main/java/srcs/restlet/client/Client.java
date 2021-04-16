@@ -1,4 +1,4 @@
-package srcs.restlet.annuaire;
+package srcs.restlet.client;
 
 import java.io.IOException;
 
@@ -10,8 +10,12 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
+import org.restlet.resource.ServerResource;
 
-public class Client extends Application{
+import srcs.restlet.annuaire.Annuaire;
+import srcs.restlet.annuaire.Etudiant;
+
+public class Client extends ServerResource {
     public static void main(String[] args) throws ResourceException, IOException {
 
         ClientResource client = new ClientResource("http://localhost:8585/annuaire/etudiants/56423");
@@ -32,10 +36,10 @@ public class Client extends Application{
         }
 
         Annuaire a = (Annuaire) getApplication();
-        Object id = getRequest().getAttribute().get("id");
-        if (!a.annuaire.containsKey(id)) {
+        Object id = getRequest().getAttributes().get("id");
+        if (!a.getAnnuaire().containsKey(id)) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
-        a.annuaire.remove(id);
+        a.getAnnuaire().remove(id);
     }
 }
