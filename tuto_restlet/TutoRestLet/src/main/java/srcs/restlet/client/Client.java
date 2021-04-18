@@ -10,12 +10,11 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
 
 import srcs.restlet.annuaire.Annuaire;
 import srcs.restlet.annuaire.Etudiant;
 
-public class Client extends ServerResource {
+public class Client extends ClientResource {
     public static void main(String[] args) throws ResourceException, IOException {
 
         ClientResource client = new ClientResource("http://localhost:8585/annuaire/etudiants/56423");
@@ -25,7 +24,7 @@ public class Client extends ServerResource {
         Representation r = client.get();
         JacksonRepresentation<Etudiant> jr = new JacksonRepresentation<>(r, Etudiant.class);
         Etudiant e = jr.getObject();
-
+        System.out.println(e.getId());
     }
 
     @Delete

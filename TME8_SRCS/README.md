@@ -115,6 +115,76 @@ Ensuite on créer le server, on vérifie si il marche
 
 ## PARTIE 4 : Application JavaEE sous Eclipse
 
-Marche pas :
-https://netbeans.apache.org/kb/docs/javaee/entappclient.html
+On utilise glassfish5 : http://download.oracle.com/glassfish/5.0/release/glassfish-5.0.zip
+
+Eclipse EE : Eclipse IDE for Enterprise Java and Web Developers 2020-03 (4.15)
+
+BD : SGBD Apache Derby
+
+Pour glassfish 5, nous forçons l'utilisation de java 8 : 
+
+`sudo update-alternatives --config java`
+
+Démarrage du serveur Apache Derby :
+
+`asadmin start-database --dbhome $HOME/JavaEE/MyDB`
+
+- Maintenant sur eclipse
+
+
+Création d'un Entreprise Application Project (EAP)
+- Project name : LogApplication 
+- target runtime : Glassfish5
+- EAR dernière version
+
+Création de la base de donnée Derby :
+Data Source Exporer -> New -> Derby : $nom : APP $mdp : APP
+
+Création du projet JPA :
+- Project name : LogJPA
+- taget Runtime : Glassfish 5
+- version 2.1
+- add project to an EAR (LogApplication)
+- Next 2 fois
+- EcpliseLink
+- Connection : BD derby créer avant 
+
+Dans le JPA project, nous créons 2 entité JPA : Log et Machine, Log depéndant d'une classe Java DateLog
+sur chaque entité JPA, nous ajoutons dans le persistance.xml
+
+Apres cela, on genere les tables a partir des entités.
+
+Ensuite vient la création du project EJB, premier probleme recurrent.
+
+Création d'un EJB project
+    * Manque le deployement descriptor
+    * JAX-WS Web Services
+- Création d'un package : beans
+- ajout d'un session beans ! ERROR
+-> dans project Facets, EJB Module devrait etre présent et coché
+Or ce n'est pas le cas et impossible de le cocher.
+
+Nous pensions que cela etait un probleme de libraire, mais ce n'était pas le cas.
+Apres avoir importer l'EJB project d'un camarade, la création de session beans était possible.
+
+Nous ajoutons le projet EJB dans l'EAP.
+
+Nous cherchons ensuite à déployer le tout sur le serveur :
+EAP -> run on server
+Le JPA n'est pas dans les projet configuré, et lors du lancement du serveur, nous avons un null pointeur exception
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

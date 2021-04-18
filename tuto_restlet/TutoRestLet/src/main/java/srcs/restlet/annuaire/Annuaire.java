@@ -36,7 +36,7 @@ public class Annuaire extends Application {
     @Override
     public Restlet createInboundRoot() {
         Router res = new Router();
-        res.attach("/etudiants/{id}", EtudiantResource.class);
+        // res.attach("/etudiants/{id}", EtudiantResource.class);
         return res;
     }
 
@@ -47,6 +47,8 @@ public class Annuaire extends Application {
         c.getDefaultHost().attach("/annuaire", new Annuaire());
         c.start();
     }
+
+
 
     static class All extends ServerResource {
 
@@ -65,20 +67,20 @@ public class Annuaire extends Application {
         }
     }
 
-    static class EtudiantResource extends ServerResource {
+    // static class EtudiantResource extends ServerResource {
 
-        @Get("xml|json")
-        public Etudiant request() {
-            Application app = this.getApplication();
-            if (!(app instanceof Annuaire)) {
-                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-            }
-            Annuaire a = (Annuaire) getApplication();
-            Object id = getRequest().getAttributes().get("id");
-            if (!a.getAnnuaire().containsKey(id)) {
-                throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
-            }
-            return a.getAnnuaire().get(id);
-        }
-    }
+    //     @Get("xml|json")
+    //     public Etudiant request() {
+    //         Application app = this.getApplication();
+    //         if (!(app instanceof Annuaire)) {
+    //             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+    //         }
+    //         Annuaire a = (Annuaire) getApplication();
+    //         Object id = getRequest().getAttributes().get("id");
+    //         if (!a.getAnnuaire().containsKey(id)) {
+    //             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+    //         }
+    //         return a.getAnnuaire().get(id);
+    //     }
+    // }
 }
