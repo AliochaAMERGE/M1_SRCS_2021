@@ -46,12 +46,16 @@
       <property name="URL" value="jdbc:derby://localhost:1527/sample"></property>
       <property name="Password" value="app"></property>
     </jdbc-connection-pool>
+    <connector-connection-pool max-pool-size="250" resource-adapter-name="jmsra" steady-pool-size="1" name="jms/__defaultConnectionFactory-Connection-Pool" connection-definition-name="javax.jms.ConnectionFactory"></connector-connection-pool>
+    <connector-resource pool-name="jms/__defaultConnectionFactory-Connection-Pool" object-type="system-all-req" jndi-name="jms/__defaultConnectionFactory"></connector-resource>
   </resources>
   <servers>
     <server config-ref="server-config" name="server">
+      <application-ref ref="LogApplication" virtual-servers="server"></application-ref>
       <resource-ref ref="jdbc/__TimerPool"></resource-ref>
       <resource-ref ref="jdbc/__default"></resource-ref>
       <resource-ref ref="jdbc/sample"></resource-ref>
+      <resource-ref ref="jms/__defaultConnectionFactory"></resource-ref>
     </server>
   </servers>
   <nodes>
@@ -85,6 +89,13 @@
       <connector-service></connector-service>
       <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs"></transaction-service>
       <batch-runtime-configuration></batch-runtime-configuration>
+      <jms-service default-jms-host="default_JMS_host" type="EMBEDDED">
+        <jms-host port="${JMS_PROVIDER_PORT}" host="localhost" name="default_JMS_host"></jms-host>
+      </jms-service>
+      <cdi-service></cdi-service>
+      <ejb-container>
+        <ejb-timer-service></ejb-timer-service>
+      </ejb-container>
       <diagnostic-service></diagnostic-service>
       <security-service>
         <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="admin-realm">
@@ -426,5 +437,24 @@
     <secure-admin-principal dn="CN=localhost-instance,OU=GlassFish,O=Oracle Corporation,L=Santa Clara,ST=California,C=US"></secure-admin-principal>
   </secure-admin>
   <clusters></clusters>
-  <applications></applications>
+  <applications>
+    <application object-type="user" name="LogApplication" directory-deployed="true" location="${com.sun.aas.instanceRootURI}/eclipseApps/LogApplication/">
+      <property name="archiveType" value="ear"></property>
+      <property name="org.glassfish.ejb.startup.keepstate" value="true"></property>
+      <property name="keepstate" value="true"></property>
+      <property name="isComposite" value="true"></property>
+      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/eclipseApps/LogApplication/"></property>
+      <property name="org.glassfish.ejb.container.application_unique_id" value="106087790212546560"></property>
+      <property name="defaultAppName" value="LogApplication"></property>
+      <module name="LogTraitement.jar">
+        <engine sniffer="ejb"></engine>
+        <engine sniffer="security"></engine>
+        <engine sniffer="weld"></engine>
+        <engine sniffer="jpa"></engine>
+        <property name="org.glassfish.persistence.app_name_property" value="LogApplication"></property>
+      </module>
+      <engine sniffer="ear"></engine>
+      <engine sniffer="jpa"></engine>
+    </application>
+  </applications>
 </domain>

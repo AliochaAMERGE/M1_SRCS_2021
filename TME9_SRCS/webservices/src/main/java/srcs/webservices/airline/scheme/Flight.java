@@ -13,13 +13,13 @@ public class Flight {
 	private final Airport to;
 	private final Date departure;
 	private final Date arrival;
-	private final Map<Passenger,String> placing;
+	private final Map<Passenger, String> placing;
 	private final Aircraft aircraft;
-	
+
 	public Flight() {
-		this("unknown",null,null,null,null,null);
+		this("unknown", null, null, null, null, null);
 	}
-	
+
 	public Flight(String id, Airport from, Airport to, Date departure, Date arrival, Aircraft aircraft) {
 		super();
 		this.id = id;
@@ -30,24 +30,31 @@ public class Flight {
 		this.placing = new HashMap<>();
 		this.aircraft = aircraft;
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public Airport getFrom() {
 		return from;
 	}
+
 	public Airport getTo() {
 		return to;
 	}
+
 	public Date getDeparture() {
 		return departure;
 	}
+
 	public Date getArrival() {
 		return arrival;
 	}
+
 	public Set<Passenger> getPassengers() {
 		return placing.keySet();
 	}
+
 	public Aircraft getAircraft() {
 		return aircraft;
 	}
@@ -55,26 +62,25 @@ public class Flight {
 	public String getPlace(Passenger p) {
 		return placing.get(p);
 	}
-	
+
 	public void addPassenger(Passenger p, String place) {
 		placing.put(p, place);
 	}
 
 	public boolean full() {
-		return getPassengers().size()>=getAircraft().getPassengerCapacity();
+		return getPassengers().size() >= getAircraft().getPassengerCapacity();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
 
-
 	public boolean isInConflict(Flight other) {
-		if(other.getDeparture().after(getDeparture()) && other.getDeparture().before(getArrival())) {
+		if (other.getDeparture().after(getDeparture()) && other.getDeparture().before(getArrival())) {
 			return true;
 		}
-		if(other.getArrival().after(getDeparture()) && other.getArrival().before(getArrival())) {
+		if (other.getArrival().after(getDeparture()) && other.getArrival().before(getArrival())) {
 			return true;
 		}
 		return false;
@@ -89,7 +95,5 @@ public class Flight {
 		Flight other = (Flight) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 }

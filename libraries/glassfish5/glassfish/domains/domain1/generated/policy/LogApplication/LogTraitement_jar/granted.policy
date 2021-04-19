@@ -1,0 +1,24 @@
+/* AUTOMATICALLY GENERATED ON Sun Apr 18 23:39:06 CEST 2021*/
+/* DO NOT EDIT */
+
+grant {
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogsWithMachine,Remote,java.lang.String";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogsWithLevel,Remote,java.lang.String";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "newLog,Remote,srcs.log.Log";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "mr_proper,Local,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getMachines,Local,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "mr_proper,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "newLog,Local,srcs.log.Log";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "newLogAsync,Remote,srcs.log.Log";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogsWithLevel,Local,java.lang.String";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogsWithMachine,Local,java.lang.String";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getMachines,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogs,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "getLogs,Local,";
+  permission javax.security.jacc.EJBMethodPermission "LogReceiver", "newLogAsync,Local,srcs.log.Log";
+};
+
+grant      principal * * {
+  permission javax.security.jacc.EJBRoleRefPermission "LogReceiver", "**";
+};
+

@@ -137,7 +137,7 @@ Création d'un Entreprise Application Project (EAP)
 - target runtime : Glassfish5
 - EAR dernière version
 
-Création de la base de donnée Derby :
+Création de la base de donnée Derby : 10.2
 Data Source Exporer -> New -> Derby : $nom : APP $mdp : APP
 
 Création du projet JPA :
@@ -173,9 +173,22 @@ Nous cherchons ensuite à déployer le tout sur le serveur :
 EAP -> run on server
 Le JPA n'est pas dans les projet configuré, et lors du lancement du serveur, nous avons un null pointeur exception
 
+cannot Deploy EAR
+deploy is failing=Error occurred during deployment: Exception while preparing the app : 
+Could not resolve a persistence unit corresponding to the persistence-context-ref-name [beans.LogReceiver/em] in the scope of the module called [EAR#EJB.jar]. 
+Please verify your application.. Please see server.log for more details.
 
+-> indiqué le nom du projet JPA dans :
+```java
+public class LogReceiver implements LogReceiverRemote {
 
+	@PersistenceContext(unitName = "LogJPA")
+```
 
+cannot Deploy EAR
+deploy is failing=Application with name [EAR] is not deployed
+
+Méthode temporaire : copie du persistance.xml du projet JPA/Meta-Inf dans le projet EJB/Meta-Inf
 
 
 
