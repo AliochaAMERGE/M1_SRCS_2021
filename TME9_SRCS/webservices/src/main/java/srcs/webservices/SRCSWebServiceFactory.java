@@ -59,17 +59,18 @@ public class SRCSWebServiceFactory implements SRCSWebService {
 
         Router router = new Router();
 
-        // admin's routes
         router.attach("/admin/airports", AdminAirportResource.class);
+        router.attach("/airports", AirportResource.class);
+
         router.attach("/admin/aircrafts", AdminAircraftResource.class);
+        router.attach("/aircrafts", AircraftsResource.class);
+
         router.attach("/admin/flights", AdminFlightResource.class);
+        router.attach("/flights", FlightsResource.class);
+        
         router.attach("/admin/flight/{id_vol}/passenger", AdminPassengerResource.class);
         router.attach("/admin/flight/{id_vol}/passengers", AdminPassengersResource.class);
         router.attach("/admin/flight/{id_vol}/place", AdminPlaceResource.class);
-        // users' routes
-        router.attach("/airports", AirportResource.class);
-        router.attach("/aircrafts", AircraftsResource.class);
-        router.attach("/flights", FlightsResource.class);
 
         return router;
     }

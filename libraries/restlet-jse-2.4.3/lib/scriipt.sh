@@ -11,7 +11,7 @@ for f in * ; do
   cd $f
   for jar in *.jar ; do
     rm -f "$path_target/$jar"
-    ln -s "$pwd/$jar" "$path_target/$jar"
+    ln -s "$PWD/$jar" "$path_target/$jar"
   done
-  cd $pathh_target
+  cd $path_target
 done

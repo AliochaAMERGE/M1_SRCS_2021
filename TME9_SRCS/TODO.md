@@ -55,3 +55,6 @@ Pour tout les /admin/xxx
 - /admin/flight/<id_vol>/place
 
   - GET -> obtenir la place la place d’un passager dont le nom et le prénom sont passés dans lapartie query de l’URI (paramètre firstname pour le prénom, paramètre lastname pour le nom).
+
+
+! les classes du packages ressources sont censée etre statiques
