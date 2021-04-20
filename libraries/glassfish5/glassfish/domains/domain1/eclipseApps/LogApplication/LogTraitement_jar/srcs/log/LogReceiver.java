@@ -83,7 +83,6 @@ public class LogReceiver implements LogReceiverRemote {
 		return l.toArray(log);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Log[] getLogsWithLevel(String level) {
 		// requete permettant de recuperer tous les logs dont le level est celui donné
@@ -100,6 +99,7 @@ public class LogReceiver implements LogReceiverRemote {
 	@Override
 	public void mr_proper() { /* Efface le contenu des tables Machines et Log */
 		// Recuperation des Logs
+		System.out.println("dans mr_proper");
 		Log[] logs = getLogs();
 
 		for (int i = 0; i < logs.length; i++) { // pour chaque logs de la base
@@ -127,20 +127,22 @@ public class LogReceiver implements LogReceiverRemote {
 	public Log[] getLogsWithMachine(String name_machine) {
 		// requete permettant de recuperer tous les logs associés à la machine dont son
 		// nom est donnée en parametre
-		Query q = em.createQuery("SELECT l FROM Log l");
+		Query q = em.createQuery("SELECT m.logs FROM Machine m WHERE m.nom = :value_nom");
+		q.setParameter("value_nom", name_machine);
 		List<?> l = q.getResultList();
-		List<Log> res = new ArrayList<>();
 
-		for (int i = 0; i < l.size(); i++) {
-			Log log = (Log) l.get(i);
-			if (log.getMachine().getNom().equals(name_machine)) { // si c'est un log associé name_machine
-				res.add(log); // ajout de ce log
-			}
-		}
+//		List<Log> res = new ArrayList<>();
+//		for (int i = 0; i < l.size(); i++) {
+//			Log log = (Log) l.get(i);
+//			// si c'est un log associé à name_machine
+//			if (log.getMachine().getNom().equals(name_machine)) {
+//				res.add(log); // ajout de ce log
+//			}
+//		}
 
 		// converti la liste res en tableau
-		Log[] logs = new Log[res.size()];
-		return res.toArray(logs);
+		Log[] logs = new Log[l.size()];
+		return l.toArray(logs);
 	}
 
 }
