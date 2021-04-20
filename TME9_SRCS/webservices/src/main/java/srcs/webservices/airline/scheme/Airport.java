@@ -3,6 +3,8 @@ package srcs.webservices.airline.scheme;
 import java.util.Objects;
 
 public class Airport {
+	
+	// 3 letters code : unique
 	private final String codeAITA;
 	private final String name;
 	private final String city;

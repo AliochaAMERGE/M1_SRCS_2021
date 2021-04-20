@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Flight {
 
+	// id unique
 	private final String id;
 	private final Airport from;
 	private final Airport to;

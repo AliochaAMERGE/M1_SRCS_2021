@@ -9,6 +9,7 @@ public class Aircraft {
 		return new Aircraft("aircraft"+(cpt++), model, passengerCapacity);
 	}
 		
+	// imatriculation unique
 	private final String registration;
 	private final String model;
 	private final int passengerCapacity;

@@ -12,6 +12,7 @@ public class Passenger {
 	}
 	
 	public Passenger(String firstName, String lastName) {
+		// appel au construteur de objet
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
