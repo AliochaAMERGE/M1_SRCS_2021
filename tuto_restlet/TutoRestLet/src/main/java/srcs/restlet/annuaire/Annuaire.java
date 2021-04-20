@@ -35,6 +35,7 @@ public class Annuaire extends Application {
     @Override
     public Restlet createInboundRoot() {
         Router res = new Router();
+        res.attach("/etudiants", All.class);
         res.attach("/etudiants/{id}", EtudiantResource.class);
         return res;
     }
@@ -51,6 +52,8 @@ public class Annuaire extends Application {
 
         @Get("xml|json")
         public Map<String, Etudiant> request() {
+
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Request All");
 
             Application app = this.getApplication();
 
