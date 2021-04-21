@@ -15,6 +15,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
+import srcs.webservices.SRCSWebServiceFactory;
 import srcs.webservices.Util;
 import srcs.webservices.airline.scheme.Airport;
 
@@ -28,7 +29,7 @@ public class AdminAirportResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
@@ -51,20 +52,23 @@ public class AdminAirportResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        System.out.println(app.getClass().getName());
+        System.out.println(app.getName());
+
+        System.out.println("tu es SRCSWebServiceFactory ? " + (app instanceof SRCSWebService));
+
+        if (!(app instanceof SRCSWebServiceFactory)) {
+            System.out.println("throw");
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        SRCSWebService service = (SRCSWebService) app;
-
+        SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
         if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
         List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
-
-
 
         for (Airport a : airports) {
             Util.allairports.add(a);
@@ -79,23 +83,17 @@ public class AdminAirportResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        SRCSWebService service = (SRCSWebService) app;
-
+        SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
         if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
         List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
-
-
-        if (!(app instanceof SRCSWebService)) {
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-        }
 
         for (Airport a : airports) {
             Util.allairports.add(a);

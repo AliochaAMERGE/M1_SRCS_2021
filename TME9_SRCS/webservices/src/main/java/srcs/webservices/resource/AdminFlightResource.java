@@ -25,7 +25,6 @@ public class AdminFlightResource extends ServerResource {
     @Get("xml|json")
     public List<Flight> request() {
 
-        // TODO raffiner la recherche
         // extract.extractQuery()
 
         return null;
