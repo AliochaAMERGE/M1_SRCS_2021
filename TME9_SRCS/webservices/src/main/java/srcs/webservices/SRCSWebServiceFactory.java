@@ -1,5 +1,6 @@
 package srcs.webservices;
 
+import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
@@ -15,7 +16,7 @@ import srcs.webservices.resource.AircraftsResource;
 import srcs.webservices.resource.AirportResource;
 import srcs.webservices.resource.FlightsResource;
 
-public class SRCSWebServiceFactory implements SRCSWebService {
+public class SRCSWebServiceFactory extends Application implements SRCSWebService {
 
     private String name;
     private int portuser;
@@ -42,9 +43,12 @@ public class SRCSWebServiceFactory implements SRCSWebService {
 
     @Override
     public void deploy() throws Exception { // permet de DEMARRER le webservice
-        // Component c = new Component();
+
         c.getServers().add(Protocol.HTTP, portuser);
         c.getServers().add(Protocol.HTTP, portadmin);
+
+
+
         c.start(); // démarrage des services
 
     }
@@ -54,7 +58,8 @@ public class SRCSWebServiceFactory implements SRCSWebService {
 
         c.stop(); // arret des services
     }
-
+    
+    @Override
     public Restlet createInboundRoot() {
 
         Router router = new Router();
@@ -67,12 +72,22 @@ public class SRCSWebServiceFactory implements SRCSWebService {
 
         router.attach("/admin/flights", AdminFlightResource.class);
         router.attach("/flights", FlightsResource.class);
-        
+
         router.attach("/admin/flight/{id_vol}/passenger", AdminPassengerResource.class);
         router.attach("/admin/flight/{id_vol}/passengers", AdminPassengersResource.class);
         router.attach("/admin/flight/{id_vol}/place", AdminPlaceResource.class);
 
         return router;
+    }
+
+    @Override
+    public int getAdminPort() {
+        return portadmin;
+    }
+
+    @Override
+    public int getUserPort() {
+        return portuser;
     }
 
 }

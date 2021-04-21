@@ -10,4 +10,8 @@ public interface SRCSWebService {
 
 	// arrete le webservice
 	public void undeploy() throws Exception;
+
+	public int getAdminPort();
+
+	public int getUserPort();
 }

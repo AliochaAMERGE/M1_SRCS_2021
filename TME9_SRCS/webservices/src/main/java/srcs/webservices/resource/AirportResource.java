@@ -17,14 +17,19 @@ import srcs.webservices.airline.scheme.Airport;
 
 public class AirportResource extends ServerResource {
 
+    // - POST -> 405
+    // - GET -> recupere la liste des aeroport desservis par la compagnie
+
     @Post("json")
-    public void ajouterPost(Representation r) throws IOException { // ajouter des aéroports à la base de données
+    public void ajouterPost(Representation r) throws IOException { 
+        // ajouter des aéroports à la base de données
 
         throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
     }
 
     @Get("xml|json")
     public List<Airport> request() {
+
         Application app = this.getApplication();
 
         if (!(app instanceof SRCSWebService)) {

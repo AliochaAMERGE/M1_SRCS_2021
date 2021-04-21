@@ -34,10 +34,10 @@ public class Annuaire extends Application {
 
     @Override
     public Restlet createInboundRoot() {
-        Router res = new Router();
+        Router router = new Router();
         // res.attach("/etudiants", All.class);
-        res.attach("/etudiants/{id}", EtudiantResource.class);
-        return res;
+        router.attach("/etudiants/{id}", EtudiantResource.class);
+        return router;
     }
 
     public static void main(String[] args) throws Exception {
@@ -52,7 +52,6 @@ public class Annuaire extends Application {
 
         @Get("xml|json")
         public Map<String, Etudiant> request() {
-
 
             Application app = this.getApplication();
 

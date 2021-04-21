@@ -19,31 +19,52 @@ import srcs.webservices.Util;
 import srcs.webservices.airline.scheme.Airport;
 
 public class AdminAirportResource extends ServerResource {
+
     // - POST ou PUT -> ajoute un aeroport
     // - GET -> recupere la liste des aeroport desservis par la compagnie
 
     @Get("xml|json")
     public List<Airport> request() {
+
         Application app = this.getApplication();
 
         if (!(app instanceof SRCSWebService)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+        }
+
+        SRCSWebService service = (SRCSWebService) app;
+
+        System.out.println(this.getRequest().getClientInfo().getPort());
+
+        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+            throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
         return Util.allairports;
     }
 
     @Post("json")
-    public Representation ajouterPost(Representation r) throws IOException { // ajouter des aéroports à la base de
-                                                                             // données
+    public Representation ajouterPost(Representation r) throws IOException {
+        // ajouter des aéroports à la base de données
 
-        List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
+        System.out.println(this.getRequest().getClientInfo().getPort());
 
         Application app = this.getApplication();
 
         if (!(app instanceof SRCSWebService)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
+
+        SRCSWebService service = (SRCSWebService) app;
+
+
+        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+            throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+        }
+
+        List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
+
+
 
         for (Airport a : airports) {
             Util.allairports.add(a);
@@ -53,10 +74,32 @@ public class AdminAirportResource extends ServerResource {
     }
 
     @Put("json")
-    public Representation ajouterPut(Representation r) throws IOException { // ajouter des aéroports à la base de
-                                                                            // données
+    public Representation ajouterPut(Representation r) throws IOException {
+        // ajouter des aéroports à la base de données
 
-        ajouterPost(r);
+        Application app = this.getApplication();
+
+        if (!(app instanceof SRCSWebService)) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+        }
+
+        SRCSWebService service = (SRCSWebService) app;
+
+
+        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+            throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+        }
+
+        List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
+
+
+        if (!(app instanceof SRCSWebService)) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+        }
+
+        for (Airport a : airports) {
+            Util.allairports.add(a);
+        }
 
         return r;
     }

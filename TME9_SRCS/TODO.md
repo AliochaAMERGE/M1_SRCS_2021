@@ -10,7 +10,6 @@ Pour tout les /admin/xxx
 - /airports
 
   - POST -> 405
-
   - GET -> recupere la liste des aeroport desservis par la compagnie
 
 - /admin/aircrafts
@@ -21,7 +20,6 @@ Pour tout les /admin/xxx
 - /aircrafts
 
   - POST -> 405
-
   - GET -> recupere la liste des avions détenu par la compagnie
 
 - /admin/flights
