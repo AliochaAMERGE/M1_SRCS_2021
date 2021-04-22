@@ -52,11 +52,28 @@ public class SRCSWebServiceFactory extends Application implements SRCSWebService
         router.attach("/aircrafts", AircraftsResource.class);
 
         router.attach("/admin/flights", AdminFlightResource.class);
+        router.attach("/admin/flights?from={from}", AdminFlightResource.class);
+        router.attach("/admin/flights?to={to}", AdminFlightResource.class);
+        router.attach("/admin/flights?from={from}&to={to}", AdminFlightResource.class);
+
         router.attach("/flights", FlightsResource.class);
+        router.attach("/flights?from={from}", FlightsResource.class);
+        router.attach("/flights?to={to}", FlightsResource.class);
+        router.attach("/flights?from={from}&to={to}", FlightsResource.class);
 
         router.attach("/admin/flight/{id_vol}/passenger", AdminPassengerResource.class);
+        router.attach("/admin/flight/{id_vol}/passenger?place={place}", AdminPassengerResource.class);
+        // /admin/flight/"+f.getId()+"/passenger?place=P"+j
+        // /admin/flight/"+f.getId()+"/passenger?place=PlaceToto
         router.attach("/admin/flight/{id_vol}/passengers", AdminPassengersResource.class);
+
+
+
         router.attach("/admin/flight/{id_vol}/place", AdminPlaceResource.class);
+        router.attach("/admin/flight/{id_vol}/place?firstname={firstname}&lastname={lastname}", AdminPlaceResource.class);
+        // /admin/flight/"+f.getId()+"/place?firstname="+p.getFirstName()+"&lastname="+p.getLastName()
+
+        router.setDefaultMatchingQuery(true); // ! a verifier si ca fonctionne sans cette ligne
         return router;
     }
 

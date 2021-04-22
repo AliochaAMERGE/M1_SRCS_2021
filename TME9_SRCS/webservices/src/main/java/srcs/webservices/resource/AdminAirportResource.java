@@ -59,7 +59,6 @@ public class AdminAirportResource extends ServerResource {
         int port = Integer.parseInt(getHostRef().toString().substring(17));
 
         if (port != service.getAdminPort()) {
-            System.out.println("ligne 61 dans ajouterPost AdminAirportResource");
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 

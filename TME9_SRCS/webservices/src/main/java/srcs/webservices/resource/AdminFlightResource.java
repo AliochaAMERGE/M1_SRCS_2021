@@ -38,11 +38,20 @@ public class AdminFlightResource extends ServerResource {
         if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
-        System.out.println("getQuery().getValues(to) = " + getQuery().getValues("to"));
-        // getQuery().contains("to");
-        // query
-
-        return null;
+//String toCodeValue = getQueryValue("to"); 
+        if (getQuery().contains("to")) {
+            String toCode = getQuery().getValues("to");
+            if (getQuery().contains("from")) {
+                String fromCode = getQuery().getValues("from");
+                return FlightsDB.getToFrom(toCode, fromCode);
+            }
+            return FlightsDB.getTo(toCode);
+        } else // query contenant seulement from
+        if (getQuery().contains("from")) {
+            String fromCode = getQuery().getValues("from");
+            return FlightsDB.getFrom(fromCode);
+        }
+        return FlightsDB.getFlights();
     }
 
     @Post("json")

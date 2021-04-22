@@ -2,6 +2,7 @@ package srcs.webservices.airline.scheme;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -97,4 +98,5 @@ public class Flight {
 		return Objects.equals(id, other.id);
 	}
 
+	
 }
