@@ -15,7 +15,7 @@ import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
 import srcs.webservices.airline.scheme.Flight;
-import srcs.webservices.airline.scheme.Flights;
+import srcs.webservices.database.FlightsDB;
 
 public class AdminFlightResource extends ServerResource {
 
@@ -48,7 +48,7 @@ public class AdminFlightResource extends ServerResource {
         JacksonRepresentation<Flight> jr = new JacksonRepresentation<>(r, Flight.class);
         Flight f = jr.getObject();
 
-        if (!Flights.add(f)) {
+        if (!FlightsDB.add(f)) {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 
@@ -73,7 +73,7 @@ public class AdminFlightResource extends ServerResource {
         JacksonRepresentation<Flight> jr = new JacksonRepresentation<>(r, Flight.class);
         Flight f = jr.getObject();
 
-        if (!Flights.add(f)) {
+        if (!FlightsDB.add(f)) {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 

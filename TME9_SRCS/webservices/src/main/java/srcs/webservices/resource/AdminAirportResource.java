@@ -16,8 +16,8 @@ import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
 import srcs.webservices.SRCSWebServiceFactory;
-import srcs.webservices.Util;
 import srcs.webservices.airline.scheme.Airport;
+import srcs.webservices.database.AirportsDB;
 
 public class AdminAirportResource extends ServerResource {
 
@@ -25,7 +25,7 @@ public class AdminAirportResource extends ServerResource {
     // - GET -> recupere la liste des aeroport desservis par la compagnie
 
     @Get("xml|json")
-    public List<Airport> request() {
+    public Representation request() {
 
         Application app = this.getApplication();
 
@@ -34,45 +34,39 @@ public class AdminAirportResource extends ServerResource {
         }
 
         SRCSWebService service = (SRCSWebService) app;
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
 
-        System.out.println(this.getRequest().getClientInfo().getPort());
-
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
-
-        return Util.allairports;
+        Representation rep = new JacksonRepresentation<List<Airport>>(AirportsDB.getAirports());
+        
+        return new JacksonRepresentation<Airport[]>(rep, Airport[].class);
     }
 
     @Post("json")
     public Representation ajouterPost(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
-        System.out.println(this.getRequest().getClientInfo().getPort());
-
         Application app = this.getApplication();
 
-        System.out.println(app.getClass().getName());
-        System.out.println(app.getName());
-
-        System.out.println("tu es SRCSWebServiceFactory ? " + (app instanceof SRCSWebService));
-
         if (!(app instanceof SRCSWebServiceFactory)) {
-            System.out.println("throw");
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
         SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
+
+        if (port != service.getAdminPort()) {
+            System.out.println("ligne 61 dans ajouterPost AdminAirportResource");
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
-        List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
+        List<Airport> airportsPost = Arrays
+                .asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
 
-        for (Airport a : airports) {
-            Util.allairports.add(a);
-        }
+        AirportsDB.setAirports(airportsPost);
 
         return r;
     }
@@ -89,15 +83,15 @@ public class AdminAirportResource extends ServerResource {
 
         SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
+
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
-        List<Airport> airports = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
+        List<Airport> airportsPut = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
 
-        for (Airport a : airports) {
-            Util.allairports.add(a);
-        }
+        AirportsDB.addAirports(airportsPut);
 
         return r;
     }

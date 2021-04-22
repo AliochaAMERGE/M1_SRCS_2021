@@ -12,8 +12,8 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
-import srcs.webservices.Util;
 import srcs.webservices.airline.scheme.Airport;
+import srcs.webservices.database.AirportsDB;
 
 public class AirportResource extends ServerResource {
 
@@ -21,7 +21,7 @@ public class AirportResource extends ServerResource {
     // - GET -> recupere la liste des aeroport desservis par la compagnie
 
     @Post("json")
-    public void ajouterPost(Representation r) throws IOException { 
+    public void ajouterPost(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
         throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
@@ -36,7 +36,7 @@ public class AirportResource extends ServerResource {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        return Util.allairports;
+        return AirportsDB.getAirports();
     }
 
 }

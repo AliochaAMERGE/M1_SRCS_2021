@@ -22,7 +22,6 @@ public class SRCSWebServiceFactory extends Application implements SRCSWebService
     private int portuser;
     private int portadmin;
     private Component c;
-    // private Component cWithoutAdmin;
 
     public SRCSWebServiceFactory(String name, int portuser, int portadmin) {
         this.name = name;
@@ -46,8 +45,8 @@ public class SRCSWebServiceFactory extends Application implements SRCSWebService
 
         Router router = new Router();
 
-        router.attach("/admin/airports", AdminAirportResource.class);
         router.attach("/airports", AirportResource.class);
+        router.attach("/admin/airports", AdminAirportResource.class);
 
         router.attach("/admin/aircrafts", AdminAircraftResource.class);
         router.attach("/aircrafts", AircraftsResource.class);
@@ -60,52 +59,6 @@ public class SRCSWebServiceFactory extends Application implements SRCSWebService
         router.attach("/admin/flight/{id_vol}/place", AdminPlaceResource.class);
         return router;
     }
-    // @Override
-    // public void deploy() throws Exception { // permet de DEMARRER le webservice
-
-    // c.getServers().add(Protocol.HTTP, portadmin);
-    // Application appAdmin = new Application() {
-
-    // @Override
-    // public Restlet createInboundRoot() {
-
-    // Router router = new Router();
-
-    // router.attach("/admin/airports", AdminAirportResource.class);
-
-    // router.attach("/admin/aircrafts", AdminAircraftResource.class);
-
-    // router.attach("/admin/flights", AdminFlightResource.class);
-
-    // router.attach("/admin/flight/{id_vol}/passenger",
-    // AdminPassengerResource.class);
-    // router.attach("/admin/flight/{id_vol}/passengers",
-    // AdminPassengersResource.class);
-    // router.attach("/admin/flight/{id_vol}/place", AdminPlaceResource.class);
-
-    // return router;
-    // }
-    // };
-    // System.out.println("dans deploy ligne 70 "+appAdmin);
-    // c.getDefaultHost().attach(appAdmin);
-
-    // cWithoutAdmin.getServers().add(Protocol.HTTP, portuser);
-    // Application appUser = new Application() {
-    // @Override
-    // public Restlet createInboundRoot() {
-
-    // Router router = new Router();
-    // router.attach("/airports", AirportResource.class);
-    // router.attach("/aircrafts", AircraftsResource.class);
-    // router.attach("/flights", FlightsResource.class);
-    // return router;
-    // }
-    // };
-    // cWithoutAdmin.getDefaultHost().attach(appUser);
-    // System.out.println("deploy l86 "+appUser);
-    // cWithoutAdmin.start();
-    // c.start();
-    // }
 
     @Override
     public void deploy() throws Exception {
@@ -117,8 +70,6 @@ public class SRCSWebServiceFactory extends Application implements SRCSWebService
 
     @Override
     public void undeploy() throws Exception { // permet d’ARRETER le webservice
-
-        // cWithoutAdmin.stop(); // arret des services
         c.stop(); // arret des services
     }
 
