@@ -106,16 +106,13 @@ public class AirlineServiceTest {
 		
 		
 		final ClientResource clientadmin = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/airports");
-		System.out.println("testA l 109 "+ airports.size());
 		final List<Airport> airports1 = airports.subList(0, airports.size()/2);
 		Representation r = clientadmin.post(new JacksonRepresentation<List<Airport>>(airports1));
 		assertEquals(0,r.getSize());
-		System.out.println("testA l113 "+ airports1.size());
 		
 		final List<Airport> airports2 = airports.subList(airports.size()/2, airports.size());
 		r = clientadmin.put(new JacksonRepresentation<List<Airport>>(airports2));
 		assertEquals(0,r.getSize());
-		System.out.println("testA l118 "+ airports2.size());
 
 		
 		final ClientResource clientuser = new ClientResource("http://localhost:"+airsrcs_portuser+"/airports");
@@ -130,7 +127,6 @@ public class AirlineServiceTest {
 		final ClientResource clientadmin3 = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/airports");
 		r = clientadmin3.get();
 		List<Airport> resviaadmin3 =  Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());	
-		System.out.println("testA l133 airports.size()="+airports.size()+" resviaadmin2.size()="+resviaadmin2.size());
 		assertEquals(airports.size(), resviaadmin2.size());
 		assertEquals(airports.size(), resviaadmin3.size());
 		assertEquals(airports.size(), resviauser.size());

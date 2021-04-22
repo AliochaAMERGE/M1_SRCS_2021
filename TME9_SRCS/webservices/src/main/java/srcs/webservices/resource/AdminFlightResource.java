@@ -14,6 +14,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
+import srcs.webservices.SRCSWebServiceFactory;
 import srcs.webservices.airline.scheme.Flight;
 import srcs.webservices.database.FlightsDB;
 
@@ -25,7 +26,21 @@ public class AdminFlightResource extends ServerResource {
     @Get("xml|json")
     public List<Flight> request() {
 
-        // extract.extractQuery()
+        Application app = this.getApplication();
+
+        if (!(app instanceof SRCSWebServiceFactory)) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+        }
+
+        SRCSWebService service = (SRCSWebService) app;
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
+
+        if (port != service.getAdminPort()) {
+            throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+        }
+        System.out.println("getQuery().getValues(to) = " + getQuery().getValues("to"));
+        // getQuery().contains("to");
+        // query
 
         return null;
     }
@@ -35,13 +50,14 @@ public class AdminFlightResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
         SRCSWebService service = (SRCSWebService) app;
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
@@ -52,7 +68,7 @@ public class AdminFlightResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 
-        return r; // todo changer ça
+        return r;
     }
 
     @Put("json")
@@ -60,13 +76,14 @@ public class AdminFlightResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
         SRCSWebService service = (SRCSWebService) app;
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
@@ -77,7 +94,7 @@ public class AdminFlightResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 
-        return r; // todo changer ça
+        return r;
     }
 
 }

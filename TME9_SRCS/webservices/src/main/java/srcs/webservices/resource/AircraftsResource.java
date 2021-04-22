@@ -12,14 +12,13 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
-import srcs.webservices.Util;
 import srcs.webservices.airline.scheme.Aircraft;
+import srcs.webservices.database.AircraftsDB;
 
 public class AircraftsResource extends ServerResource {
 
     // - POST -> 405
     // - GET -> recupere la liste des avions détenu par la compagnie
-
 
     @Post("json")
     public void ajouterPost(Representation r) throws IOException {
@@ -37,7 +36,7 @@ public class AircraftsResource extends ServerResource {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        return Util.aircrafts;
+        return AircraftsDB.getAircrafts();
     }
 
 }

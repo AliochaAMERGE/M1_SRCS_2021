@@ -15,8 +15,9 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import srcs.webservices.SRCSWebService;
-import srcs.webservices.Util;
+import srcs.webservices.SRCSWebServiceFactory;
 import srcs.webservices.airline.scheme.Aircraft;
+import srcs.webservices.database.AircraftsDB;
 
 public class AdminAircraftResource extends ServerResource {
 
@@ -24,21 +25,23 @@ public class AdminAircraftResource extends ServerResource {
     // - GET -> recupere la liste des avions détenu par la compagnie
 
     @Get("xml|json")
-    public List<Aircraft> request() {
+    public Representation request() {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
         SRCSWebService service = (SRCSWebService) app;
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
-
-        return Util.aircrafts;
+        Representation rep = new JacksonRepresentation<List<Aircraft>>(AircraftsDB.getAircrafts());
+        
+        return new JacksonRepresentation<Aircraft[]>(rep, Aircraft[].class);
     }
 
     @Post("json")
@@ -47,22 +50,23 @@ public class AdminAircraftResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        SRCSWebService service = (SRCSWebService) app;
+        SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
+
+        if (port != service.getAdminPort()) {
+            System.out.println("ligne 61 dans ajouterPost AdminAircraftResource");
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
-        List<Aircraft> aircrafts = Arrays
+        List<Aircraft> aircraftsPost = Arrays
                 .asList(new JacksonRepresentation<Aircraft[]>(r, Aircraft[].class).getObject());
 
-        for (Aircraft a : aircrafts) {
-            Util.aircrafts.add(a);
-        }
+        AircraftsDB.setAircrafts(aircraftsPost);
 
         return r;
     }
@@ -73,22 +77,21 @@ public class AdminAircraftResource extends ServerResource {
 
         Application app = this.getApplication();
 
-        if (!(app instanceof SRCSWebService)) {
+        if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
-        SRCSWebService service = (SRCSWebService) app;
+        SRCSWebServiceFactory service = (SRCSWebServiceFactory) app;
 
-        if (this.getRequest().getClientInfo().getPort() != service.getAdminPort()) {
+        int port = Integer.parseInt(getHostRef().toString().substring(17));
+
+        if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
-        List<Aircraft> aircrafts = Arrays
-                .asList(new JacksonRepresentation<Aircraft[]>(r, Aircraft[].class).getObject());
+        List<Aircraft> aircraftsPut = Arrays.asList(new JacksonRepresentation<Aircraft[]>(r, Aircraft[].class).getObject());
 
-        for (Aircraft a : aircrafts) {
-            Util.aircrafts.add(a);
-        }
+        AircraftsDB.addAircrafts(aircraftsPut);
 
         return r;
     }

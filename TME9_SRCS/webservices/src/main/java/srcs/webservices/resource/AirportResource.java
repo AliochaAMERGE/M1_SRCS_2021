@@ -22,8 +22,6 @@ public class AirportResource extends ServerResource {
 
     @Post("json")
     public void ajouterPost(Representation r) throws IOException {
-        // ajouter des aéroports à la base de données
-
         throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
     }
 
