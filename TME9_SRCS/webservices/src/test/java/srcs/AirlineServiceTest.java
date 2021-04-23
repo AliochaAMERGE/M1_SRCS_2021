@@ -390,7 +390,6 @@ public class AirlineServiceTest {
 				
 				ClientResource admin2 = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/flight/"+f.getId()+"/place?firstname="+p.getFirstName()+"&lastname="+p.getLastName());
 				String res = new JacksonRepresentation<String>(admin2.get(), String.class).getObject();
-				System.out.println("res = " + res);
 				assertEquals("P"+j, res);
 			}		
 			cpt+=nb_pass;

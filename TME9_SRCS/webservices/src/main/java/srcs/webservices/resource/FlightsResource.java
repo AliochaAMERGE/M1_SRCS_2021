@@ -13,7 +13,6 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
-import srcs.webservices.SRCSWebService;
 import srcs.webservices.SRCSWebServiceFactory;
 import srcs.webservices.airline.scheme.Flight;
 import srcs.webservices.database.FlightsDB;
@@ -28,8 +27,6 @@ public class FlightsResource extends ServerResource {
         if (!(app instanceof SRCSWebServiceFactory)) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
-
-        SRCSWebService service = (SRCSWebService) app;
 
         Form queryParams = getQuery();
         String from = queryParams.getFirstValue("from");

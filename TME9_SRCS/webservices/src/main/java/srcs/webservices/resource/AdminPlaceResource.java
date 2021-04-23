@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.restlet.Application;
 import org.restlet.data.Form;
 import org.restlet.data.Status;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
@@ -18,7 +19,7 @@ import srcs.webservices.database.FlightsDB;
 public class AdminPlaceResource extends ServerResource {
 
     @Get("xml|json")
-    public String request(Representation r) throws IOException {
+    public JacksonRepresentation<String> request(Representation r) throws IOException {
 
         Application app = this.getApplication();
 
@@ -44,9 +45,7 @@ public class AdminPlaceResource extends ServerResource {
             if (f.getId().equals(id_vol)) {
                 for (Passenger pa : f.getPassengers()) {
                     if (pa.getFirstName().equals(firstName) && pa.getLastName().equals(lastName)) {
-                        System.out.println(f.getPlace(pa));
-                        
-                        return f.getPlace(pa);
+                        return new JacksonRepresentation<String>(f.getPlace(pa));
                     }
                 }
             }
