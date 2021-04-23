@@ -104,16 +104,15 @@ public class AirlineServiceTest {
 	@Test
 	public void testA_Airports_add() throws IOException {
 		
-		
 		final ClientResource clientadmin = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/airports");
 		final List<Airport> airports1 = airports.subList(0, airports.size()/2);
 		Representation r = clientadmin.post(new JacksonRepresentation<List<Airport>>(airports1));
 		assertEquals(0,r.getSize());
 		
+		
 		final List<Airport> airports2 = airports.subList(airports.size()/2, airports.size());
 		r = clientadmin.put(new JacksonRepresentation<List<Airport>>(airports2));
 		assertEquals(0,r.getSize());
-
 		
 		final ClientResource clientuser = new ClientResource("http://localhost:"+airsrcs_portuser+"/airports");
 		r = clientuser.get();
@@ -127,6 +126,7 @@ public class AirlineServiceTest {
 		final ClientResource clientadmin3 = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/airports");
 		r = clientadmin3.get();
 		List<Airport> resviaadmin3 =  Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());	
+	
 		assertEquals(airports.size(), resviaadmin2.size());
 		assertEquals(airports.size(), resviaadmin3.size());
 		assertEquals(airports.size(), resviauser.size());
@@ -228,8 +228,6 @@ public class AirlineServiceTest {
 		for(Flight f : flights) {
 			admin.post(new JacksonRepresentation<>(f));
 		}
-		
-		
 		List<Flight> flights_received =  Arrays.asList(
 				new JacksonRepresentation<Flight[]>(
 						admin.get(), 
@@ -255,9 +253,9 @@ public class AirlineServiceTest {
 		ClientResource admin = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/flights");
 		ResourceException re1 = assertThrows(ResourceException.class, () ->{
 			admin.post(new JacksonRepresentation<>(
-					new Flight("airsrcs"+1,airports.get(0), airports.get(1),formater.parse("2022-01-07-16-00"),formater.parse("2022-01-07-19-00"), aircrafts.get(0))
-					));
-		});
+				new Flight("airsrcs"+1,airports.get(0), airports.get(1),formater.parse("2022-01-07-16-00"),formater.parse("2022-01-07-19-00"), aircrafts.get(0))
+				));
+			});
 		assertEquals(Status.CLIENT_ERROR_PRECONDITION_FAILED,re1.getResponse().getStatus());
 		
 		
@@ -284,7 +282,6 @@ public class AirlineServiceTest {
 					));
 		});
 		assertEquals(Status.CLIENT_ERROR_PRECONDITION_FAILED,re4.getResponse().getStatus());
-		
 		//test d'un avion qui est en conflit avec un autre vol
 		ResourceException re5 = assertThrows(ResourceException.class, () ->{
 			admin.post(new JacksonRepresentation<>(
@@ -316,8 +313,7 @@ public class AirlineServiceTest {
 						client1.get(), 
 						Flight[].class).getObject()
 				).size());
-		
-		
+
 		
 		for(Integer i : Arrays.asList(1,2,3,4)) {
 			ClientResource clienti = new ClientResource(uri+"?to="+airports.get(i).getCodeAITA());
@@ -372,7 +368,7 @@ public class AirlineServiceTest {
 				ClientResource admin = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/flight/"+f.getId()+"/passenger?place=P"+j);
 				Representation r =admin.post(new JacksonRepresentation<Passenger>(new Passenger("firstname"+i, "lastname"+i)));
 				assertTrue(new JacksonRepresentation<Boolean>(r,Boolean.class).getObject());
-			}		
+			}
 			cpt+=nb_pass;
 			ClientResource admin2 = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/flight/"+f.getId()+"/passenger?place=PlaceToto");
 			Representation r =admin2.post(new JacksonRepresentation<Passenger>(new Passenger("Toto", "Titi")));
@@ -394,6 +390,7 @@ public class AirlineServiceTest {
 				
 				ClientResource admin2 = new ClientResource("http://localhost:"+airsrcs_portadmin+"/admin/flight/"+f.getId()+"/place?firstname="+p.getFirstName()+"&lastname="+p.getLastName());
 				String res = new JacksonRepresentation<String>(admin2.get(), String.class).getObject();
+				System.out.println("res = " + res);
 				assertEquals("P"+j, res);
 			}		
 			cpt+=nb_pass;

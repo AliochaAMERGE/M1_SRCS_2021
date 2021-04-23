@@ -40,12 +40,12 @@ public class AdminAirportResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
         Representation rep = new JacksonRepresentation<List<Airport>>(AirportsDB.getAirports());
-        
+
         return new JacksonRepresentation<Airport[]>(rep, Airport[].class);
     }
 
     @Post("json")
-    public Representation ajouterPost(Representation r) throws IOException {
+    public void ajouterPost(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
         Application app = this.getApplication();
@@ -67,11 +67,10 @@ public class AdminAirportResource extends ServerResource {
 
         AirportsDB.setAirports(airportsPost);
 
-        return r;
     }
 
     @Put("json")
-    public Representation ajouterPut(Representation r) throws IOException {
+    public void ajouterPut(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
         Application app = this.getApplication();
@@ -91,8 +90,6 @@ public class AdminAirportResource extends ServerResource {
         List<Airport> airportsPut = Arrays.asList(new JacksonRepresentation<Airport[]>(r, Airport[].class).getObject());
 
         AirportsDB.addAirports(airportsPut);
-
-        return r;
     }
 
 }

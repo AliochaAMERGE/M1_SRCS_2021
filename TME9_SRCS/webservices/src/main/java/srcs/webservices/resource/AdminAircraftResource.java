@@ -40,12 +40,12 @@ public class AdminAircraftResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
         Representation rep = new JacksonRepresentation<List<Aircraft>>(AircraftsDB.getAircrafts());
-        
+
         return new JacksonRepresentation<Aircraft[]>(rep, Aircraft[].class);
     }
 
     @Post("json")
-    public Representation ajouterPost(Representation r) throws IOException {
+    public void ajouterPost(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
         Application app = this.getApplication();
@@ -68,11 +68,10 @@ public class AdminAircraftResource extends ServerResource {
 
         AircraftsDB.setAircrafts(aircraftsPost);
 
-        return r;
     }
 
     @Put("json")
-    public Representation ajouterPut(Representation r) throws IOException {
+    public void ajouterPut(Representation r) throws IOException {
         // ajouter des aéroports à la base de données
 
         Application app = this.getApplication();
@@ -89,11 +88,11 @@ public class AdminAircraftResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
 
-        List<Aircraft> aircraftsPut = Arrays.asList(new JacksonRepresentation<Aircraft[]>(r, Aircraft[].class).getObject());
+        List<Aircraft> aircraftsPut = Arrays
+                .asList(new JacksonRepresentation<Aircraft[]>(r, Aircraft[].class).getObject());
 
         AircraftsDB.addAircrafts(aircraftsPut);
 
-        return r;
     }
 
 }

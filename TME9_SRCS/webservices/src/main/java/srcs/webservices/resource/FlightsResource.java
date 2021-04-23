@@ -1,9 +1,11 @@
 package srcs.webservices.resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.restlet.Application;
+import org.restlet.data.Form;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -18,11 +20,6 @@ import srcs.webservices.database.FlightsDB;
 
 public class FlightsResource extends ServerResource {
 
-    @Post("json")
-    public void ajouterPost(Representation r) throws IOException {
-        throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
-    }
-
     @Get("xml|json")
     public List<Flight> request() {
 
@@ -33,25 +30,42 @@ public class FlightsResource extends ServerResource {
         }
 
         SRCSWebService service = (SRCSWebService) app;
-        int port = Integer.parseInt(getHostRef().toString().substring(17));
 
-        if (port != service.getAdminPort()) {
-            throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
-        }
+        Form queryParams = getQuery();
+        String from = queryParams.getFirstValue("from");
+        String to = queryParams.getFirstValue("to");
 
-        if (getQuery().contains("to")) {
-            String toCode = getQuery().getValues("to");
-            if (getQuery().contains("from")) {
-                String fromCode = getQuery().getValues("from");
-                return FlightsDB.getToFrom(toCode, fromCode);
+        List<Flight> fl = new ArrayList<Flight>();
+        if (from != null) {
+            if (to != null) {
+                for (Flight f : FlightsDB.getFlights()) {
+                    if (f.getFrom().getCodeAITA().equals(from) && f.getTo().getCodeAITA().equals(to)) {
+                        fl.add(f);
+                    }
+                }
+
+                return fl;
             }
-            return FlightsDB.getTo(toCode);
-        } else // query contenant seulement from
-        if (getQuery().contains("from")) {
-            String fromCode = getQuery().getValues("from");
-            return FlightsDB.getFrom(fromCode);
+            for (Flight f : FlightsDB.getFlights()) {
+                if (f.getFrom().getCodeAITA().equals(from)) {
+                    fl.add(f);
+                }
+            }
+            return fl;
+        } else if (to != null) {
+            for (Flight f : FlightsDB.getFlights()) {
+                if (f.getTo().getCodeAITA().equals(to)) {
+                    fl.add(f);
+                }
+            }
+            return fl;
         }
         return FlightsDB.getFlights();
+    }
+
+    @Post("json")
+    public void ajouterPost(Representation r) throws IOException {
+        throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
     }
 
 }

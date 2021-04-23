@@ -1,9 +1,11 @@
 package srcs.webservices.resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.restlet.Application;
+import org.restlet.data.Form;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
@@ -38,24 +40,41 @@ public class AdminFlightResource extends ServerResource {
         if (port != service.getAdminPort()) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }
-//String toCodeValue = getQueryValue("to"); 
-        if (getQuery().contains("to")) {
-            String toCode = getQuery().getValues("to");
-            if (getQuery().contains("from")) {
-                String fromCode = getQuery().getValues("from");
-                return FlightsDB.getToFrom(toCode, fromCode);
+
+        Form queryParams = getQuery();
+        String from = queryParams.getFirstValue("from");
+        String to = queryParams.getFirstValue("to");
+
+        List<Flight> fl = new ArrayList<Flight>();
+        if (from != null) {
+            if (to != null) {
+                for (Flight f : FlightsDB.getFlights()) {
+                    if (f.getFrom().getCodeAITA().equals(from) && f.getTo().getCodeAITA().equals(to)) {
+                        fl.add(f);
+                    }
+                }
+
+                return fl;
             }
-            return FlightsDB.getTo(toCode);
-        } else // query contenant seulement from
-        if (getQuery().contains("from")) {
-            String fromCode = getQuery().getValues("from");
-            return FlightsDB.getFrom(fromCode);
+            for (Flight f : FlightsDB.getFlights()) {
+                if (f.getFrom().getCodeAITA().equals(from)) {
+                    fl.add(f);
+                }
+            }
+            return fl;
+        } else if (to != null) {
+            for (Flight f : FlightsDB.getFlights()) {
+                if (f.getTo().getCodeAITA().equals(to)) {
+                    fl.add(f);
+                }
+            }
+            return fl;
         }
         return FlightsDB.getFlights();
     }
 
     @Post("json")
-    public Representation ajouterPost(Representation r) throws IOException {
+    public void ajouterPost(Representation r) throws IOException {
 
         Application app = this.getApplication();
 
@@ -77,11 +96,10 @@ public class AdminFlightResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 
-        return r;
     }
 
     @Put("json")
-    public Representation ajouterPut(Representation r) throws IOException {
+    public void ajouterPut(Representation r) throws IOException {
 
         Application app = this.getApplication();
 
@@ -103,7 +121,6 @@ public class AdminFlightResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_PRECONDITION_FAILED);
         }
 
-        return r;
     }
 
 }
