@@ -50,7 +50,6 @@ public class AdminPlaceResource extends ServerResource {
                 }
             }
         }
-
         throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
     }
 }

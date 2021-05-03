@@ -33,6 +33,8 @@ public class FlightsDB {
             return false;
         }
 
+        // l'avion utilisé n'existe pas
+        
         if (!(FlightsDB.aircraftExist(flight.getAircraft()))) {
             return false;
         }
